@@ -1,1 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Number Incrementer</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const container = document.getElementById("container");
+const counterCount = 10;
 
+for (let i = 0; i < counterCount; i++) {
+    // Create a new div element using template literals
+    const div = document.createElement("div");
+    div.innerHTML = `
+        <input type="number" id="num${i}" value="0" onchange="saveToLocalStorage('num${i}')">
+        <button onclick="incrementNumber('num${i}')">+</button>
+        <button onclick="decrementNumber('num${i}')">-</button>
+        <input type="text" value="Number ${i}" id="text${i}" onchange="saveToLocalStorage('text${i}')">
+    `;
+    
+    // Append the div to the container
+    container.appendChild(div);
+}
+    
+  </script>
+  <hr>
+
+  <div>
+    <strong>Total:</strong>
+    <span id="total">0</span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

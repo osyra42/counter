@@ -1,0 +1,51 @@
+body, button {
+      background-color: #222;
+      color: #ddd;
+      font-size: 24px;
+      margin: 0px;
+      padding: 0px;
+    }
+    button {
+      width: 48px;
+      height: 48px;
+    }
+    input[type="number"] {
+      margin: 0px;
+      padding: 0px;
+      width: 48px;
+      height: 48px;
+      font-size: 24px;
+      text-align: center;
+      background-color: #444;
+      color: #ddd;
+      border: 1px solid #111;
+      vertical-align: top;
+    }
+    input[type="text"] {
+      margin: 0px;
+      padding: 0px;
+      width: 200px;
+      height: 48px;
+      font-size: 24px;
+      text-align: left;
+      background-color: #444;
+      color: #ddd;
+      border: 1px solid #111;
+      vertical-align: top;
+    }
+    /* Adjust layout for mobile devices */
+@media (max-width: 600px) {
+    /* Apply styles to the container div */
+    #container {
+        display: flex;
+        flex-direction: column; /* Change to column for vertical stacking */
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    /* Adjust styles for individual div elements within the container */
+    #container div {
+        width: 100%; /* Ensure they take full width of the container */
+        margin-bottom: 10px; /* Add spacing between the divs */
+    }
+}
