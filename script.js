@@ -59,11 +59,27 @@ function updatePieChart(data, labels) {
             display: true,
             position: 'left',
           },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                var label = context.label || '';
+                var value = context.formattedValue;
+                var total = context.dataset.data.reduce(function (accumulator, currentValue) {
+                  return accumulator + currentValue;
+                });
+                var percentage = total > 0 ? ((context.parsed / total) * 100).toFixed(2) + '%' : '0%';
+                return label + ': ' + value + ' (' + percentage + ')';
+              },
+            },
+          },
         },
       },
     });
   }
 }
+
+// Rest of your code...
+
 
 function saveToLocalStorage(id) {
   var inputValue = document.getElementById(id).value;
