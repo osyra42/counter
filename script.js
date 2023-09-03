@@ -1,3 +1,70 @@
+const container = document.getElementById("container");
+const counterCount = 10;
+
+// Generate the colors
+const colors = colorMake(counterCount);
+
+for (let i = 0; i < counterCount; i++) {
+  // Create a new div element using template literals
+  const div = document.createElement("div");
+  
+  // Set the background color based on the colors array
+  div.style.backgroundColor = colors[i];
+
+  div.innerHTML = `
+    <input type="number" id="num${i}" value="0" onchange="saveToLocalStorage('num${i}')">
+    <button class="plus" onclick="incrementNumber('num${i}')">+</button>
+    <button class="minus" onclick="decrementNumber('num${i}')">&ndash;</button>
+    <input type="text" value="Number ${i}" id="text${i}" onchange="saveToLocalStorage('text${i}')">
+  `;
+
+  // Append the div to the container
+  container.appendChild(div);
+}
+
+var pieChart; // Declare pieChart globally
+
+function colorMake(x) {
+  var hueIncrement = 360 / x;
+  var colors = [];
+
+  for (var i = 0; i < x; i++) {
+    var hue = i * hueIncrement;
+    var hslColor = "hsl(" + hue + ", 80%, 50%)";
+    colors.push(hslColor);
+  }
+  return colors;
+}
+
+function updatePieChart(data, labels) {
+  if (pieChart) {
+    pieChart.data.labels = labels;
+    pieChart.data.datasets[0].data = data;
+    pieChart.data.datasets[0].backgroundColor = colorMake(data.length);
+    pieChart.update();
+  } else {
+    var ctx = document.getElementById('pieChart').getContext('2d');
+    pieChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          backgroundColor: colorMake(data.length),
+        }],
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: true,
+            position: 'left',
+          },
+        },
+      },
+    });
+  }
+}
+
 function saveToLocalStorage(id) {
   var inputValue = document.getElementById(id).value;
   localStorage.setItem(id, inputValue);
@@ -24,11 +91,23 @@ function updateTotal() {
   var totalElement = document.getElementById('total');
   var totalValue = 0;
 
+  var data = [];
+  var labels = [];
+
   for (var i = 0; i <= 9; i++) {
-    totalValue += parseInt(document.getElementById('num' + i).value);
+    var numInput = document.getElementById('num' + i);
+    var numValue = parseInt(numInput.value);
+
+    totalValue += numValue;
+    data.push(numValue);
+
+    var textInput = document.getElementById('text' + i);
+    var labelText = textInput.value;
+    labels.push(labelText);
   }
 
   totalElement.textContent = totalValue;
+  updatePieChart(data, labels);
 }
 
 function incrementNumber(id) {
@@ -37,6 +116,7 @@ function incrementNumber(id) {
   currentValue++;
   numberInput.value = currentValue;
   saveToLocalStorage(id);
+  updateTotal();
 }
 
 function decrementNumber(id) {
@@ -46,6 +126,7 @@ function decrementNumber(id) {
     currentValue--;
     numberInput.value = currentValue;
     saveToLocalStorage(id);
+    updateTotal();
   }
 }
 
